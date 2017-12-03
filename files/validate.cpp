@@ -5,14 +5,10 @@
 // # include "../includes/Exception.hpp"
 
 VALIDATE::VALIDATE()
-{
-
-}
+{ ; }
 
 VALIDATE::~VALIDATE()
-{
-
-}
+{ ; }
 
 bool			VALIDATE::checkEndRead(std::string *str)
 {

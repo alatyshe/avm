@@ -24,7 +24,7 @@
 
 class AVM
 {
-	typedef void	(AVM::*voidOperations)();
+	typedef void	(AVM::*voidOperations)();	// дефайн для массива методов
 protected:
 	voidOperations	_arrayCommands[10];
 
@@ -35,8 +35,8 @@ public:
 
 
 	//	Commands;
-	void		push(/*IOperand const * value*/);
-	void		assert(/*IOperand const * value*/);
+	void		push(IOperand const * type);
+	void		assert(IOperand const * type);
 	void		pop();
 	void		dump();
 	void		add();

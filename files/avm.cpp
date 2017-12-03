@@ -17,56 +17,44 @@ AVM::AVM()
 }
 
 AVM::~AVM()
-{
+{ ; }
 
+void		AVM::push(IOperand const * type) {
+	;
 }
 
-void		AVM::push(/*IOperand const * value*/)
-{
-
+void		AVM::assert(IOperand const * type) {
+	;
 }
 
-void		AVM::assert(/*IOperand const * value*/)
-{
-
+void		AVM::pop() {
+	;
 }
 
-void		AVM::pop()
-{
-
+void		AVM::dump() {
+	;
 }
 
-void		AVM::dump()
-{
-
+void		AVM::add() {
+	;
 }
 
-void		AVM::add()
-{
-
+void		AVM::sub() {
+	;
 }
 
-void		AVM::sub()
-{
-
+void		AVM::mul() {
+	;
 }
 
-void		AVM::mul()
-{
-
+void		AVM::div() {
+	;
 }
 
-void		AVM::div()
-{
-
+void		AVM::mod() {
+	;
 }
 
-void		AVM::mod()
-{
-
-}
-
-void		AVM::print()
-{
-
+void		AVM::print() {
+	;
 }

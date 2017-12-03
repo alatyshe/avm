@@ -20,28 +20,35 @@ HEAD = header/avm.hpp header/validate.hpp header/IOperand.hpp
 
 #------ path -------
 FILES_PATH		= ./files
+TYPES_PATH		= ./files/types
 OBJECTS_PATH	= ./objects
 
 
 #------ files ------
-FILES_FILES		= main avm validate
+FILES_FILES		= main avm validate factory
+TYPES_FILES		= int8
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
+TYPES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(TYPES_FILES)))
 
 
 #------ make ------
 all: $(NAME)
 
-$(NAME): $(FILES_OBJ)
+$(NAME): $(FILES_OBJ) $(TYPES_OBJ)
 	@echo "\n"
 	@echo $(CYAN) "\tCompiling $@"$(RESET)
-	@clang++ $(FLAGS) -o $@ $^
+	@$(CXX) -o $@ $^
 	@echo $(GREEN) "\tavm\t\t- has been made\n"$(RESET)
 
 $(OBJECTS_PATH)/%.o: $(FILES_PATH)/%.cpp
 	@echo $(PURPLE) "\tCompiling $<"$(RESET)
 	@mkdir $(OBJECTS_PATH) 2> /dev/null || true
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+$(OBJECTS_PATH)/%.o: $(TYPES_PATH)/%.cpp
+	@echo $(PURPLE) "\tCompiling $<"$(RESET)
 	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 
