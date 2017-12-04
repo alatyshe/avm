@@ -1,11 +1,11 @@
-#ifndef INT8_H
-# define INT8_H
+#ifndef INT16_H
+# define INT16_H
 
 # include "avm.hpp"
 # include "IOperand.hpp"
 # include "factory.hpp"
 
-class Int8 : public IOperand {
+class Int16 : public IOperand {
 private:
 	int 				_precision;
 	eOperandType		_type;
@@ -13,8 +13,8 @@ private:
 	int					_value;
 
 public:
-	Int8();
-	Int8(std::string const & value);
+	Int16();
+	Int16(std::string const & value);
 	int 				getPrecision( void ) const; // Precision of the type of the instance
 	eOperandType 		getType( void ) const; // Type of the instance
 	IOperand const * 	operator+( IOperand const & rhs ) const; // Sum
@@ -23,9 +23,9 @@ public:
 	// IOperand const * 	operator/( IOperand const & rhs ) const; // Quotient
 	// IOperand const * 	operator%( IOperand const & rhs ) const; // Modulo
 	std::string const & toString( void ) const; // String representation of the instance
-	~Int8( void );
+	~Int16( void );
 };
 
-std::ostream&		operator<<(std::ostream& out, const Int8& rhs);
+std::ostream&		operator<<(std::ostream& out, const Int16& rhs);
 
 #endif

@@ -1,10 +1,13 @@
 # include "../header/validate.hpp"
 # include "../header/factory.hpp"
+# include "../header/IOperand.hpp"
 # include "../header/avm.hpp"
 # include "../header/int8.hpp"
+# include "../header/int16.hpp"
+# include "../header/int32.hpp"
+# include "../header/float.hpp"
 
-// # include "../includes/OperandFactory.hpp"
-// # include "../includes/Exception.hpp"
+# include "../header/Exception.hpp"
 
 Factory::Factory()
 { ; }
@@ -22,24 +25,60 @@ IOperand const * Factory::createOperand( eOperandType type, std::string const & 
 		return (Factory::createInt32(value));
 	else if (type == FLOAT)
 		return (Factory::createFloat(value));
-	else// (type == DOUBLE)
+	else
 		return (Factory::createDouble(value));
 }
 
 IOperand const * Factory::createInt8( std::string const & value ) const {
+	int				tmp;
+	int				max = std::numeric_limits<int8_t>::max();
+	int				min = std::numeric_limits<int8_t>::min();
+
+	tmp = std::stoi(value);
+	if (tmp < min)
+		throw Exception("Error : Underflow");
+	else if (tmp > max)
+		throw Exception("Error : Overflow");
 	return (new Int8(value));
 }
 
 IOperand const * Factory::createInt16( std::string const & value ) const {
-	return (new Int8(value));
+	int				tmp;
+	int				max = std::numeric_limits<int16_t>::max();
+	int				min = std::numeric_limits<int16_t>::min();
+
+	tmp = std::stoi(value);
+	if (tmp < min)
+		throw Exception("Error : Underflow");
+	else if (tmp > max)
+		throw Exception("Error : Overflow");
+	return (new Int16(value));
 }
 
 IOperand const * Factory::createInt32( std::string const & value ) const {
-	return (new Int8(value));
+	int				tmp;
+	int				max = std::numeric_limits<int32_t>::max();
+	int				min = std::numeric_limits<int32_t>::min();
+
+	tmp = std::stoi(value);
+	if (tmp < min)
+		throw Exception("Error : Underflow");
+	else if (tmp > max)
+		throw Exception("Error : Overflow");
+	return (new Int32(value));
 }
 
 IOperand const * Factory::createFloat( std::string const & value ) const {
-	return (new Int8(value));
+	float			tmp;
+	float			max = std::numeric_limits<float>::max();
+	float			min = std::numeric_limits<float>::min();
+
+	tmp = ::atof(value.c_str());
+	if (tmp < min)
+		throw Exception("Error : Underflow");
+	else if (tmp > max)
+		throw Exception("Error : Overflow");
+	return (new Float(value));
 }
 
 IOperand const * Factory::createDouble( std::string const & value ) const {

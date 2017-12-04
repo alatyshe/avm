@@ -1,25 +1,25 @@
 # include "../../header/validate.hpp"
 # include "../../header/avm.hpp"
-# include "../../header/Int8.hpp"
+# include "../../header/int32.hpp"
 # include "../../header/Exception.hpp"
 
 
-Int8::Int8(std::string const & value)
+Int32::Int32(std::string const & value)
 { 
-	this->_type = INT8;
+	this->_type = INT32;
 	this->_value = std::stoi(value);
-	this->_precision = 1;
+	this->_precision = 3;
 	this->_str = std::to_string(this->_value);
 }
 
-Int8::Int8() { ; }
-Int8::~Int8() { ; }
+Int32::Int32() { ; }
+Int32::~Int32() { ; }
 
-int 				Int8::getPrecision( void ) const { return (this->_precision); }
-eOperandType 		Int8::getType( void ) const { return (this->_type); }
-std::string const & Int8::toString( void ) const { return (this->_str); }
+int 				Int32::getPrecision( void ) const { return (this->_precision); }
+eOperandType 		Int32::getType( void ) const { return (this->_type); }
+std::string const & Int32::toString( void ) const { return (this->_str); }
 
-IOperand const * 	Int8::operator+( IOperand const & rhs ) const
+IOperand const * 	Int32::operator+( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
@@ -52,7 +52,7 @@ IOperand const * 	Int8::operator+( IOperand const & rhs ) const
 // 	return (this);
 // }
 
-IOperand const * 	Int8::operator*( IOperand const & rhs ) const
+IOperand const * 	Int32::operator*( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
@@ -80,6 +80,11 @@ IOperand const * 	Int8::operator*( IOperand const & rhs ) const
 	return (factory.createOperand(type, std::to_string(res)));
 }
 
+
+std::ostream&		operator<<(std::ostream& out, const Int32& rhs) {
+	out << rhs.toString() << std::endl;
+	return out;
+}
 // IOperand const * 	operator/( IOperand const & rhs ) const
 // {
 // 	return (this);
@@ -94,9 +99,3 @@ IOperand const * 	Int8::operator*( IOperand const & rhs ) const
 // {
 // 	return (this);
 // }
-
-
-std::ostream&		operator<<(std::ostream& out, const Int8& rhs) {
-	out << rhs.toString() << std::endl;
-	return out;
-}

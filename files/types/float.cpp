@@ -1,25 +1,25 @@
 # include "../../header/validate.hpp"
 # include "../../header/avm.hpp"
-# include "../../header/Int8.hpp"
+# include "../../header/float.hpp"
 # include "../../header/Exception.hpp"
 
 
-Int8::Int8(std::string const & value)
+Float::Float(std::string const & value)
 { 
-	this->_type = INT8;
-	this->_value = std::stoi(value);
-	this->_precision = 1;
+	this->_type = FLOAT;
+	this->_value = ::atof(value.c_str());;
+	this->_precision = 3;
 	this->_str = std::to_string(this->_value);
 }
 
-Int8::Int8() { ; }
-Int8::~Int8() { ; }
+Float::Float() { ; }
+Float::~Float() { ; }
 
-int 				Int8::getPrecision( void ) const { return (this->_precision); }
-eOperandType 		Int8::getType( void ) const { return (this->_type); }
-std::string const & Int8::toString( void ) const { return (this->_str); }
+int 				Float::getPrecision( void ) const { return (this->_precision); }
+eOperandType 		Float::getType( void ) const { return (this->_type); }
+std::string const & Float::toString( void ) const { return (this->_str); }
 
-IOperand const * 	Int8::operator+( IOperand const & rhs ) const
+IOperand const * 	Float::operator+( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
@@ -52,7 +52,7 @@ IOperand const * 	Int8::operator+( IOperand const & rhs ) const
 // 	return (this);
 // }
 
-IOperand const * 	Int8::operator*( IOperand const & rhs ) const
+IOperand const * 	Float::operator*( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
@@ -80,6 +80,11 @@ IOperand const * 	Int8::operator*( IOperand const & rhs ) const
 	return (factory.createOperand(type, std::to_string(res)));
 }
 
+
+std::ostream&		operator<<(std::ostream& out, const Float& rhs) {
+	out << rhs.toString() << std::endl;
+	return out;
+}
 // IOperand const * 	operator/( IOperand const & rhs ) const
 // {
 // 	return (this);
@@ -94,9 +99,3 @@ IOperand const * 	Int8::operator*( IOperand const & rhs ) const
 // {
 // 	return (this);
 // }
-
-
-std::ostream&		operator<<(std::ostream& out, const Int8& rhs) {
-	out << rhs.toString() << std::endl;
-	return out;
-}

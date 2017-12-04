@@ -1,25 +1,25 @@
 # include "../../header/validate.hpp"
 # include "../../header/avm.hpp"
-# include "../../header/Int8.hpp"
+# include "../../header/int16.hpp"
 # include "../../header/Exception.hpp"
 
 
-Int8::Int8(std::string const & value)
+Int16::Int16(std::string const & value)
 { 
-	this->_type = INT8;
+	this->_type = INT16;
 	this->_value = std::stoi(value);
-	this->_precision = 1;
+	this->_precision = 2;
 	this->_str = std::to_string(this->_value);
 }
 
-Int8::Int8() { ; }
-Int8::~Int8() { ; }
+Int16::Int16() { ; }
+Int16::~Int16() { ; }
 
-int 				Int8::getPrecision( void ) const { return (this->_precision); }
-eOperandType 		Int8::getType( void ) const { return (this->_type); }
-std::string const & Int8::toString( void ) const { return (this->_str); }
+int 				Int16::getPrecision( void ) const { return (this->_precision); }
+eOperandType 		Int16::getType( void ) const { return (this->_type); }
+std::string const & Int16::toString( void ) const { return (this->_str); }
 
-IOperand const * 	Int8::operator+( IOperand const & rhs ) const
+IOperand const * 	Int16::operator+( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
@@ -52,14 +52,13 @@ IOperand const * 	Int8::operator+( IOperand const & rhs ) const
 // 	return (this);
 // }
 
-IOperand const * 	Int8::operator*( IOperand const & rhs ) const
+IOperand const * 	Int16::operator*( IOperand const & rhs ) const
 {
 	Factory				factory;
 	eOperandType		type;
 	int 				prec;
 	double				res;
 	
-
 	res = (std::stod(this->toString())) * (std::stod(rhs.toString()));
 	if (this->_precision > rhs.getPrecision())
 		prec = this->_precision;
@@ -95,8 +94,7 @@ IOperand const * 	Int8::operator*( IOperand const & rhs ) const
 // 	return (this);
 // }
 
-
-std::ostream&		operator<<(std::ostream& out, const Int8& rhs) {
+std::ostream&		operator<<(std::ostream& out, const Int16& rhs) {
 	out << rhs.toString() << std::endl;
 	return out;
 }

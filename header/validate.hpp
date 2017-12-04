@@ -4,19 +4,18 @@
 # include "IOperand.hpp"
 # include "avm.hpp"
 
-class VALIDATE
+class Validate
 {
 
 public:
-	VALIDATE();
-	~VALIDATE();
+	Validate();
+	~Validate();
 
-
-	bool		static checkEndRead(std::string *str);
-	bool		static checkComment(std::string *str);
-	void		static checkCmd(std::string *str);
-	bool		static checkLine(std::string *str, bool inputType);
-	
+	bool			static checkEndRead(std::string &str);
+	bool			static checkComment(std::string &str);
+	int				static checkCmd(std::string &str);
+	int				static checkLine(std::string &str, bool inputType);
+	eOperandType 	static getOperandType(std::string &str);
 };
 
 #endif

@@ -12,42 +12,45 @@
 
 # define COMMENT			";"
 # define ENDREAD			";;"
-// # include <iomanip>
+# define INTEGER			"([-]?)([0-9]+)([)])([\\s]*)"
+# define FLOAT_DOUBLE		"([-]?)([0-9]+)(.)([0-9]+)([)])([\\s]*)"
 
 # include <fstream>
 # include <iostream>
+# include <vector>
+# include <limits>
 # include <regex>
 
 
 # include "IOperand.hpp"
 # include "validate.hpp"
 
+class IOperand;
+
 class AVM
 {
-	typedef void	(AVM::*voidOperations)();	// дефайн для массива методов
 protected:
-	voidOperations	_arrayCommands[10];
-
+	std::vector<IOperand const *>	_values;
 
 public:
 	AVM();
 	~AVM();
 
+	void				push(IOperand const * type);
+	void				assert(IOperand const * type);
+	void				pop(void);
+	void				dump(void);
+	void				add(void);
+	void				sub(void);
+	void				mul(void);
+	void				div(void);
+	void				mod(void);
+	void				print(void);
+	void 				exit(void);
 
-	//	Commands;
-	void		push(IOperand const * type);
-	void		assert(IOperand const * type);
-	void		pop();
-	void		dump();
-	void		add();
-	void		sub();
-	void		mul();
-	void		div();
-	void		mod();
-	void		print();
-	void 		exit(){};
-
-
+private:
+	AVM&				operator=(const AVM& src);
+	AVM(const AVM&);
 };
 
 #endif

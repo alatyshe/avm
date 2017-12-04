@@ -25,8 +25,8 @@ OBJECTS_PATH	= ./objects
 
 
 #------ files ------
-FILES_FILES		= main avm validate factory
-TYPES_FILES		= int8
+FILES_FILES		= main avm validate factory Exception
+TYPES_FILES		= int8 int16 int32 float
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
