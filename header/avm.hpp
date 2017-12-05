@@ -15,11 +15,15 @@
 # define INTEGER			"([-]?)([0-9]+)([)])([\\s]*)"
 # define FLOAT_DOUBLE		"([-]?)([0-9]+)(.)([0-9]+)([)])([\\s]*)"
 
-# include <fstream>
+
 # include <iostream>
+# include <iomanip>
+# include <fstream>
 # include <vector>
 # include <limits>
 # include <regex>
+# include <string>
+# include <sstream>
 
 
 # include "IOperand.hpp"
@@ -31,6 +35,7 @@ class AVM
 {
 protected:
 	std::vector<IOperand const *>	_values;
+	std::vector<std::string>		_errors;
 
 public:
 	AVM();

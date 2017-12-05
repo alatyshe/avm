@@ -1,5 +1,6 @@
 # include "../header/validate.hpp"
 # include "../header/avm.hpp"
+# include "../header/Operand.hpp"
 # include "../header/Exception.hpp"
 
 AVM::AVM() { ; }
@@ -10,11 +11,22 @@ void		AVM::push(IOperand const * type) {
 }
 
 void		AVM::assert(IOperand const * type) {
-	;
+	std::string		first = this->_values[0]->toString();
+	std::string		second = type->toString();
+	if (second.compare(first))
+	{
+		std::cout << "ERROR" << std::endl;
+		return ; // сюда добавить ошибку
+	}
 }
 
 void		AVM::pop() {
-	std::cout << "POP" << std::endl;
+	if (this->_values.size() < 1)	//
+	{
+		std::cout << "ERROR" << std::endl;
+		return ; // сюда добавить ошибку
+	}
+	this->_values.erase(_values.begin());
 }
 
 void		AVM::dump() {
@@ -28,10 +40,21 @@ void		AVM::dump() {
 
 void		AVM::add() {
 	IOperand const *	result;
-	IOperand const *	first = this->_values[0];
-	IOperand const *	second = this->_values[1];
+	IOperand const *	first;
+	IOperand const *	second;
 
+	if (this->_values.size() < 2)
+	{
+		std::cout << "ERROR" << std::endl;
+		return ; // сюда добавить ошибку
+	}
+	first = this->_values[0];
+	second = this->_values[1];
+	
 	result = (*first) + (*second);
+
+	this->_values.erase(_values.begin(), _values.begin() + 2);
+
 	this->_values.insert(this->_values.begin(), result);
 }
 
@@ -41,10 +64,21 @@ void		AVM::sub() {
 
 void		AVM::mul() {
 	IOperand const *	result;
-	IOperand const *	first = this->_values[0];
-	IOperand const *	second = this->_values[1];
+	IOperand const *	first;
+	IOperand const *	second;
 
+	if (this->_values.size() < 2)
+	{
+		std::cout << "ERROR" << std::endl;
+		return ; // сюда добавить ошибку
+	}
+	first = this->_values[0];
+	second = this->_values[1];
+	
 	result = (*first) * (*second);
+
+	this->_values.erase(_values.begin(), _values.begin() + 2);
+	
 	this->_values.insert(this->_values.begin(), result);
 }
 

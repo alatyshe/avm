@@ -5,10 +5,11 @@
 Validate::Validate() { ; }
 Validate::~Validate() { ; }
 
-	// if((type != FLOAT && type != DOUBLE) && !std::regex_match(value, std::regex(INTEGER)))
-	// 	throw Exception("Error : Syntax error");
-	// else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(value, std::regex(FLOAT_DOUBLE)))
-	// 	throw Exception("Error : Syntax error");
+
+				// if((type != FLOAT && type != DOUBLE) && !std::regex_match(value, std::regex(INTEGER)))
+				// 	throw Exception("Error : Syntax error");
+				// else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(value, std::regex(FLOAT_DOUBLE)))
+				// 	throw Exception("Error : Syntax error");
 
 bool			Validate::checkEndRead(std::string &str) // checking on  " ;; "
 {
@@ -48,6 +49,8 @@ int				Validate::checkCmd(std::string &str)	// check on valid command
 		if (str.compare(0, cmds[i].size(), cmds[i]) == 0) {
 			str.erase(0, cmds[i].size());
 			std::cout << GREEN <<  "I FIND CMD!" << RESET << std::endl;
+
+
 			return i;
 		}
 		i++;

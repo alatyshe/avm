@@ -25,18 +25,16 @@ OBJECTS_PATH	= ./objects
 
 
 #------ files ------
-FILES_FILES		= main avm validate factory Exception
-TYPES_FILES		= int8 int16 int32 float
+FILES_FILES		= main avm validate factory Exception Operand
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
-TYPES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(TYPES_FILES)))
 
 
 #------ make ------
 all: $(NAME)
 
-$(NAME): $(FILES_OBJ) $(TYPES_OBJ)
+$(NAME): $(FILES_OBJ) 
 	@echo "\n"
 	@echo $(CYAN) "\tCompiling $@"$(RESET)
 	@$(CXX) -o $@ $^
@@ -45,10 +43,6 @@ $(NAME): $(FILES_OBJ) $(TYPES_OBJ)
 $(OBJECTS_PATH)/%.o: $(FILES_PATH)/%.cpp
 	@echo $(PURPLE) "\tCompiling $<"$(RESET)
 	@mkdir $(OBJECTS_PATH) 2> /dev/null || true
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
-
-$(OBJECTS_PATH)/%.o: $(TYPES_PATH)/%.cpp
-	@echo $(PURPLE) "\tCompiling $<"$(RESET)
 	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 
