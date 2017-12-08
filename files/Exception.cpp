@@ -1,25 +1,19 @@
 # include "../header/Exception.hpp"
 
-Exception::Exception(const char *msg)
-{
-	std::ostringstream oss; 
-	oss << msg; 
-	this->_msg = oss.str();
-}
+Exception::Exception() : _error("") { ; };
+Exception::Exception(std::string const &error) : _error(error) { ; }
 
-Exception::Exception(const char *msg, int line)
-{
-	std::ostringstream oss; 
-	oss << "Error line " << line << " : " << msg; 
-	this->_msg = oss.str();
-}
+Exception::Exception(std::string const &error, int line = 0) { 
+	std::stringstream	error_res;
 
-Exception::~Exception() throw()
-{
+	if (line != 0)
+		error_res << "Line " << line << " : ";
+	error_res << error << std::endl;
+	this->_error = error_res.str();
+};
 
-}
+Exception::~Exception() throw () { ; };
 
-const char*	Exception::what() const throw()
-{
-	return _msg.c_str();
+char const				*Exception::what(void) const throw() { 
+	return this->_error.c_str();
 }

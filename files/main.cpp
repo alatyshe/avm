@@ -1,9 +1,8 @@
-#include "../header/validate.hpp"
-#include "../header/factory.hpp"
-#include "../header/avm.hpp"
+#include "../header/Parser.hpp"
+#include "../header/Factory.hpp"
+#include "../header/AVM.hpp"
 #include "../header/Operand.hpp"
 #include "../header/Exception.hpp"
-
 
 void			read_input(AVM &machine)
 {
@@ -13,16 +12,20 @@ void			read_input(AVM &machine)
 	eOperandType		type;
 
 	while (std::getline (std::cin, line)) {
-		cmd = Validate::checkLine(line, false);
+		cmd = Parser::checkLine(line, false);
+		// std::cout << line << std::endl;
+		// std::cout << cmd << std::endl;
 		if (cmd == 0)
 		{
-			type = Validate::getOperandType(line);
-			machine.push(factory.createOperand(type, line));
+			type = Parser::getOperandType(line);
+			if (machine.checkOverflow(type, line))
+				machine.push(factory.createOperand(type, line));
 		}
 		else if (cmd == 1)
 		{
-			type = Validate::getOperandType(line);
-			machine.assert(factory.createOperand(type, line));
+			type = Parser::getOperandType(line);
+			if (machine.checkOverflow(type, line))
+				machine.assert(factory.createOperand(type, line));
 		}
 		else if (cmd == 2)
 			machine.pop();
@@ -42,6 +45,7 @@ void			read_input(AVM &machine)
 			machine.print();
 		else if (cmd == 10)
 			machine.exit();
+		machine.plusLine();
 	}
 }
 
@@ -49,7 +53,7 @@ int				main(int argc, char **argv)
 {
 	int			count_players;
 	AVM			machine;
-	Validate	valid;
+	Parser	valid;
 
 	count_players = 0;
 	if (argc == 2)	//	read from file
@@ -70,15 +74,15 @@ int				main(int argc, char **argv)
 // 	eOperandType		type;
 
 // 	while (std::getline (input, line)) {
-// 		cmd = Validate::checkLine(line, false);
+// 		cmd = Parser::checkLine(line, false);
 // 		if (cmd == 0)
 // 		{
-// 			type = Validate::getOperandType(line);
+// 			type = Parser::getOperandType(line);
 // 			machine.push(factory.createOperand(type, line));
 // 		}
 // 		else if (cmd == 1)
 // 		{
-// 			Validate::getOperandType(line);
+// 			Parser::getOperandType(line);
 // 			// machine.assert()
 // 		}
 // 		else if (cmd == 2)

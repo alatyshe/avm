@@ -25,17 +25,20 @@
 # include <string>
 # include <sstream>
 
-
 # include "IOperand.hpp"
-# include "validate.hpp"
+# include "Exception.hpp"
+# include "factory.hpp"
+# include "parser.hpp"
 
-class IOperand;
-
-class AVM
+class AVM : public Factory, public Parser
 {
+
 protected:
 	std::vector<IOperand const *>	_values;
 	std::vector<std::string>		_errors;
+	std::vector<std::string>		_result;
+	int								_stop;
+	int								_line;
 
 public:
 	AVM();
@@ -53,9 +56,14 @@ public:
 	void				print(void);
 	void 				exit(void);
 
+	void				plusLine(void);
+	int					checkOverflow( eOperandType type, std::string const & value );
+
+
 private:
 	AVM&				operator=(const AVM& src);
 	AVM(const AVM&);
+
 };
 
 #endif

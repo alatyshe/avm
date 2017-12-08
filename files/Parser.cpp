@@ -1,17 +1,17 @@
-# include "../header/validate.hpp"
-# include "../header/avm.hpp"
+# include "../header/Parser.hpp"
+# include "../header/AVM.hpp"
 # include "../header/Exception.hpp"
 
-Validate::Validate() { ; }
-Validate::~Validate() { ; }
 
+Parser::Parser() { ; }
+Parser::~Parser() { ; }
 
-				// if((type != FLOAT && type != DOUBLE) && !std::regex_match(value, std::regex(INTEGER)))
-				// 	throw Exception("Error : Syntax error");
-				// else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(value, std::regex(FLOAT_DOUBLE)))
-				// 	throw Exception("Error : Syntax error");
+	// if((type != FLOAT && type != DOUBLE) && !std::regex_match(value, std::regex(INTEGER)))
+	// 	throw Exception("Error : Syntax error");
+	// else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(value, std::regex(FLOAT_DOUBLE)))
+	// 	throw Exception("Error : Syntax error");
 
-bool			Validate::checkEndRead(std::string &str) // checking on  " ;; "
+bool			Parser::checkEndRead(std::string &str) // checking on  " ;; "
 {
 	int			pos;
 
@@ -26,7 +26,7 @@ bool			Validate::checkEndRead(std::string &str) // checking on  " ;; "
 	return (false);
 }
 
-bool			Validate::checkComment(std::string &str)// check and delete comments
+bool			Parser::checkComment(std::string &str)// check and delete comments
 {
 	int			pos;
 
@@ -36,7 +36,7 @@ bool			Validate::checkComment(std::string &str)// check and delete comments
 	return true;
 }
 
-int				Validate::checkCmd(std::string &str)	// check on valid command
+int				Parser::checkCmd(std::string &str)	// check on valid command
 {
 	int			i = 0;
 	std::string	cmds[11] = {
@@ -59,7 +59,7 @@ int				Validate::checkCmd(std::string &str)	// check on valid command
 	return (-1);
 }
 
-int				Validate::checkLine(std::string &str, bool inputType)
+int				Parser::checkLine(std::string &str, bool inputType)
 {
 	bool		checkEnd;
 	int			i;
@@ -77,7 +77,7 @@ int				Validate::checkLine(std::string &str, bool inputType)
 }
 
 
-eOperandType 	Validate::getOperandType(std::string &str)
+eOperandType 	Parser::getOperandType(std::string &str)
 {
 	int				i;
 	eOperandType	type;

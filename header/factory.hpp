@@ -1,12 +1,10 @@
 #ifndef FACTORY_H
 # define FACTORY_H
 
-# include "avm.hpp"
 # include "IOperand.hpp"
-# include "validate.hpp"
+# include "Exception.hpp"
 
 class IOperand;
-
 
 class Factory
 {

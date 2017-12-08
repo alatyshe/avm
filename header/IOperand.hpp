@@ -1,8 +1,7 @@
 #ifndef IOPERAND_H
 # define IOPERAND_H
 
-# include "avm.hpp"
-# include "validate.hpp"
+# include <string>
 
 enum eOperandType
 {
@@ -12,7 +11,6 @@ enum eOperandType
 	FLOAT,
 	DOUBLE
 };
-
 
 
 class IOperand {
@@ -28,7 +26,5 @@ public:
 	virtual std::string const & toString( void ) const = 0; // String representation of the instance
 	virtual ~IOperand( void ) {};
 };
-
-
 
 #endif

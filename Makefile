@@ -25,7 +25,7 @@ OBJECTS_PATH	= ./objects
 
 
 #------ files ------
-FILES_FILES		= main avm validate factory Exception Operand
+FILES_FILES		= main AVM Parser Factory Exception
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
