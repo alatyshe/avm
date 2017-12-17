@@ -5,6 +5,7 @@
 # include "IOperand.hpp"
 # include "factory.hpp"
 # include "Exception.hpp"
+# include "Parser.hpp"
 
 template<typename T>
 class Operand : public IOperand, public Factory {
@@ -15,9 +16,10 @@ private:
 	std::string			_str;
 	T					_value;
 
+	Operand<T>(const Operand&);
+	const Operand<T>& operator=(const Operand<T>&);
 public:
 	Operand<T>();
-	Operand<T>(std::string const & value);
 	Operand<T>(eOperandType type, std::string const & value);
 
 	int 				getPrecision( void ) const; // Precision of the type of the instance
@@ -66,26 +68,6 @@ Operand<T>::Operand(eOperandType type, std::string const & value) {
 }
 
 template<typename T>
-Operand<T>::Operand(std::string const & value) {
-	std::regex			regular("([.])([0-9]+)");
-	std::cmatch			result;
-	int 				prec;
-	std::stringstream	stream;
-
-	if(std::regex_search(value.c_str(), result, regular))
-		prec = std::string(result[2]).size();
-	else
-		prec = 0;
-
-	this->_value = std::stod(value.c_str());
-
-	stream << std::fixed << std::setprecision(prec) << _value;
-
-	this->_precision = prec;
-	this->_str = stream.str();;
-}
-
-template<typename T>
 Operand<T>::Operand() { ; }
 template<typename T>
 Operand<T>::~Operand() { ; }
@@ -98,107 +80,73 @@ template<typename T>
 std::string const & Operand<T>::toString( void ) const { return (this->_str); }
 
 template<typename T>
-IOperand const * 	Operand<T>::operator+( IOperand const & rhs ) const {
+IOperand const *	Operand<T>::operator+( IOperand const & rhs ) const {
 	eOperandType		type;
-	int 				prec;
-	double				res;
+	// int 				prec;
+	long double			res;
 
 	res = (std::stod(this->toString())) + (std::stod(rhs.toString()));
-	//	Установка точности для float double
-	if (this->_precision > rhs.getPrecision())
-		prec = this->_precision;
-	else
-		prec = rhs.getPrecision();
+	//	Установка точности для float double	
+	// prec = (this->_precision > rhs.getPrecision()) ? this->_precision : rhs.getPrecision();
 	//	Установка типа
-	if (this->_type > rhs.getType())
-		type = this->_type;
-	else
-		type = rhs.getType();
-	//	Создание екземпляра
+	type = (this->_type > rhs.getType()) ? this->_type : type = rhs.getType();
+	
+	std::string   value = std::to_string(res);
+	if (type < 3)
+		Parser::checkOverflow(type, value, 0);
+
 	return (Factory::createOperand(type, std::to_string(res)));
 }
 
 template<typename T>
-IOperand const * 	Operand<T>::operator-( IOperand const & rhs ) const {
+IOperand const *	Operand<T>::operator-( IOperand const & rhs ) const {
 	eOperandType		type;
-	int 				prec;
-	double				res;
+	long double			res;
 	
 	res = (std::stod(this->toString())) - (std::stod(rhs.toString()));
-	//	Установка точности для float double
-	if (this->_precision > rhs.getPrecision())
-		prec = this->_precision;
-	else
-		prec = rhs.getPrecision();
-	//	Установка типа
-	if (this->_type > rhs.getType())
-		type = this->_type;
-	else
-		type = rhs.getType();
-	//	Создание екземпляра
+	type = (this->_type > rhs.getType()) ? this->_type : type = rhs.getType();
+	
+	std::string   value = std::to_string(res);
+	if (type < 3)
+		Parser::checkOverflow(type, value, 0);
+
 	return (Factory::createOperand(type, std::to_string(res)));
 }
 
 template<typename T>
-IOperand const * 	Operand<T>::operator*( IOperand const & rhs ) const {
+IOperand const *	Operand<T>::operator*( IOperand const & rhs ) const {
 	eOperandType		type;
-	int 				prec;
-	double				res;
+	long double			res;
 	
 	res = (std::stod(this->toString())) * (std::stod(rhs.toString()));
-	//	Установка точности для float double
-	if (this->_precision > rhs.getPrecision())
-		prec = this->_precision;
-	else
-		prec = rhs.getPrecision();
-	//	Установка типа
-	if (this->_type > rhs.getType())
-		type = this->_type;
-	else
-		type = rhs.getType();
-	//	Создание екземпляра
+	type = (this->_type > rhs.getType()) ? this->_type : type = rhs.getType();
+	
+	std::string   value = std::to_string(res);
+	if (type < 3)
+		Parser::checkOverflow(type, value, 0);
+
 	return (Factory::createOperand(type, std::to_string(res)));
 }
 
 template<typename T>
-IOperand const * 	Operand<T>::operator/( IOperand const & rhs ) const {
+IOperand const *	Operand<T>::operator/( IOperand const & rhs ) const {
 	eOperandType		type;
-	int 				prec;
 	double				res;
 	
 	res = (std::stod(this->toString())) / (std::stod(rhs.toString()));
-	//	Установка точности для float double
-	if (this->_precision > rhs.getPrecision())
-		prec = this->_precision;
-	else
-		prec = rhs.getPrecision();
-	//	Установка типа
-	if (this->_type > rhs.getType())
-		type = this->_type;
-	else
-		type = rhs.getType();
-	//	Создание екземпляра
+	type = (this->_type > rhs.getType()) ? this->_type : type = rhs.getType();
+
 	return (Factory::createOperand(type, std::to_string(res)));
 }
 
 template<typename T>
-IOperand const * 	Operand<T>::operator%( IOperand const & rhs ) const {
+IOperand const *	Operand<T>::operator%( IOperand const & rhs ) const {
 	eOperandType		type;
-	int 				prec;
 	int					res;
 	
 	res = (std::stoi(this->toString())) % (std::stoi(rhs.toString()));
-	//	Установка точности для float double
-	if (this->_precision > rhs.getPrecision())
-		prec = this->_precision;
-	else
-		prec = rhs.getPrecision();
-	//	Установка типа
-	if (this->_type > rhs.getType())
-		type = this->_type;
-	else
-		type = rhs.getType();
-	//	Создание екземпляра
+	type = (this->_type > rhs.getType()) ? this->_type : type = rhs.getType();
+
 	return (Factory::createOperand(type, std::to_string(res)));
 }
 

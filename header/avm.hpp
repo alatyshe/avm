@@ -13,7 +13,7 @@
 # define COMMENT			";"
 # define ENDREAD			";;"
 # define INTEGER			"([-]?)([0-9]+)([)])([\\s]*)"
-# define FLOAT_DOUBLE		"([-]?)([0-9]+)(.)([0-9]+)([)])([\\s]*)"
+# define FLOAT_DOUBLE		"([-]?)([0-9]+)([.]*)([0-9]*)([)])([\\s]*)"
 
 
 # include <iostream>
@@ -27,25 +27,31 @@
 
 # include "IOperand.hpp"
 # include "Exception.hpp"
+# include "Parser.hpp"
 # include "factory.hpp"
-# include "parser.hpp"
 
-class AVM : public Factory, public Parser
+class AVM : public Factory
 {
+
+	typedef void	(AVM::*Commands)();
 
 protected:
 	std::vector<IOperand const *>	_values;
 	std::vector<std::string>		_errors;
 	std::vector<std::string>		_result;
-	int								_stop;
+	bool							_exit;
+	bool							_end_read;
 	int								_line;
+	Commands 						_cmds[11];
 
 public:
 	AVM();
 	~AVM();
 
-	void				push(IOperand const * type);
-	void				assert(IOperand const * type);
+	void				stringHandling(std::string line, bool file);
+
+	void				push(std::string line);
+	void				assert(std::string line);
 	void				pop(void);
 	void				dump(void);
 	void				add(void);
@@ -56,8 +62,11 @@ public:
 	void				print(void);
 	void 				exit(void);
 
-	void				plusLine(void);
-	int					checkOverflow( eOperandType type, std::string const & value );
+	bool				getEndRead(void) const;
+	bool				getExit(void) const;
+
+	void				displayResult(void);
+	void				displayErrors(void);
 
 
 private:

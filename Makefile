@@ -12,7 +12,7 @@ RESET 	= "\033[0;0m"
 #-------------------
 
 CXX 		= clang++
-# CXXFLAGS 	= -Wall -Wextra -Werror
+CXXFLAGS 	= -Wall -Wextra -Werror
 
 NAME = avm
 HEAD = header/avm.hpp header/validate.hpp header/IOperand.hpp
@@ -25,7 +25,7 @@ OBJECTS_PATH	= ./objects
 
 
 #------ files ------
-FILES_FILES		= main AVM Parser Factory Exception
+FILES_FILES		= main AVM Factory Exception Parser
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
@@ -45,6 +45,18 @@ $(OBJECTS_PATH)/%.o: $(FILES_PATH)/%.cpp
 	@mkdir $(OBJECTS_PATH) 2> /dev/null || true
 	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
+
+#------ make tests ------
+tests:
+	@mkdir -p "misc/output"
+	@echo "\n\033[1;33m\033[4;33mLaunching unit tests for abstract VM...\n\033[0m"
+	@i=1; for d in misc/tests/* ; do \
+		echo "$$i - Running test file \"$$d\":" ; \
+		ruby $$d ; \
+		i=$$(($$i+1)) ; \
+		echo "" ; \
+	done
+	@echo "\033[1;33m\033[4;33mDone.\n\033[0m"
 
 #------ make clean ------
 

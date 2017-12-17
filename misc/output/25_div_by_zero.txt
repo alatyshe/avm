@@ -1,0 +1,1 @@
+Line 6 : [1;31mERROR [0;0m: Try Div on 0

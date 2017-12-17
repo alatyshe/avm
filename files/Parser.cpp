@@ -6,104 +6,124 @@
 Parser::Parser() { ; }
 Parser::~Parser() { ; }
 
-	// if((type != FLOAT && type != DOUBLE) && !std::regex_match(value, std::regex(INTEGER)))
-	// 	throw Exception("Error : Syntax error");
-	// else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(value, std::regex(FLOAT_DOUBLE)))
-	// 	throw Exception("Error : Syntax error");
+void			Parser::checkNumber(eOperandType type, std::string &str, int line) {
+	if((type != FLOAT && type != DOUBLE) && !std::regex_match(str, std::regex(INTEGER)))
+		throw Exception("Line Error", line);
+	else if ((type == FLOAT || type == DOUBLE) && !std::regex_match(str, std::regex(FLOAT_DOUBLE)))
+		throw Exception("Line Error", line);
+}
 
-bool			Parser::checkEndRead(std::string &str) // checking on  " ;; "
-{
-	int			pos;
+int				Parser::checkOverflow( eOperandType type, std::string &value, int line) {
+	if (type == INT8 || type == INT16 || type == INT32) {
+		int64_t			tmp;
+		int				max;
+		int				min;
 
-	pos = str.find(ENDREAD);
-	if (pos != -1) {
-		pos = str.find_first_not_of(" \n", pos + 2);
-		if (pos != -1 && pos != str.size()) {	// проверка на разную хуйню в после окончания ввода
-			std::cout << "WHAT FUCK IS THAT" << std::endl;
+		if (type == INT8) {
+			max = std::numeric_limits<int8_t>::max();
+			min = std::numeric_limits<int8_t>::min();
+		} else if (type == INT16) {
+			max = std::numeric_limits<int16_t>::max();
+			min = std::numeric_limits<int16_t>::min();
+		} else {
+			max = std::numeric_limits<int32_t>::max();
+			min = std::numeric_limits<int32_t>::min();
 		}
-		return (true);
+		tmp = std::stod(value);
+		if (tmp < min)
+			throw Exception("Underflow", line);
+		else if (tmp > max)
+			throw Exception("Overflow", line);
+	} else if (type == FLOAT || type == DOUBLE) {
+		long double			tmp;
+		double				max;
+		double				min;
+
+		if (type == FLOAT) {
+			max = std::numeric_limits<float>::max();
+			min = std::numeric_limits<float>::min();
+		} else {
+			max = std::numeric_limits<double>::max();
+			min = std::numeric_limits<double>::min();
+		}
+		tmp = std::stod(value);
+		if (tmp < min)
+			throw Exception("Underflow", line);
+		else if (tmp > max)
+			throw Exception("Overflow", line);
 	}
-	return (false);
+	return (1);
 }
 
-bool			Parser::checkComment(std::string &str)// check and delete comments
-{
-	int			pos;
 
-	pos = str.find(COMMENT);
-	if (pos != -1)
-		str.erase(pos, str.size());
-	return true;
-}
-
-int				Parser::checkCmd(std::string &str)	// check on valid command
+int				Parser::checkCmd(std::string &str, int line)	// check on valid command
 {
-	int			i = 0;
 	std::string	cmds[11] = {
 		"push ","assert ","pop",
 		"dump","add","sub",
 		"mul","div","mod",
 		"print", "exit"};
 
-	while (i < 11) {
-		if (str.compare(0, cmds[i].size(), cmds[i]) == 0) {
+	if (str.size() == 0)
+		return (-1);
+	for (int i = 0; i < 11; i++)
+	{
+		if (str.compare(0, cmds[i].size(), cmds[i]) == 0)
+		{
 			str.erase(0, cmds[i].size());
-			std::cout << GREEN <<  "I FIND CMD!" << RESET << std::endl;
-
-
+			if (i != 0 && i != 1)
+			{
+				str.erase(std::remove(str.begin(),str.end(),' '), str.end());
+				if (str.size() != 0)
+					throw Exception("Syntax Error", line);
+			}
 			return i;
 		}
-		i++;
 	}
-	std::cout << RED << "FUCK, I DONT FIND CMD!" << RESET << std::endl;
-	return (-1);
+	throw Exception("Invalid Command", line);
 }
 
-int				Parser::checkLine(std::string &str, bool inputType)
+bool			Parser::checkEndCmt(std::string &str, bool end_read, int line) // checking on  " ;; "
 {
-	bool		checkEnd;
-	int			i;
+	int			pos;
+	bool		res;
 
-	if (inputType == true)
-		checkEnd = checkEndRead(str);
-	else
-		checkEnd = false;
-
-	if (!checkEnd) {
-		checkComment(str);
-		i = checkCmd(str);
+	res = false;
+	if (end_read)
+	{
+		pos = str.find(ENDREAD);
+		if (pos != -1) {
+			if (pos != 0)
+				throw Exception("Syntax Error ;;", line);
+			pos = str.find_first_not_of(" \n", pos + 2);
+			if (pos != -1 && pos != static_cast<int>(str.size())) // проверка на разную хуйню в после окончания ввода
+				throw Exception("Syntax Error after ;;", line);
+			res = true;
+		}
 	}
-	return i;
+	pos = str.find(COMMENT);
+	if (pos != -1)
+		str.erase(pos, str.size());
+	return (res);
 }
 
-
-eOperandType 	Parser::getOperandType(std::string &str)
+int 			Parser::getOperandType(std::string &str, int line)
 {
-	int				i;
-	eOperandType	type;
 	std::string		types[5] = {
 		"int8(","int16(","int32(",
 		"float(","double("
 	};
 
-	i = 0;
-	while (i < 5) {
+	for (int i = 0; i < 5; i++)
+	{
 		if (str.compare(0, types[i].size(), types[i]) == 0)
 		{
 			str.erase(0, types[i].size());
-			if (i == 0)
-				type = INT8;
-			else if (i == 1)
-				type = INT16;
-			else if (i == 2)
-				type = INT32;
-			else if (i == 3)
-				type = FLOAT;
-			else if (i == 4)
-				type = DOUBLE;
-			return type;
+			return i;
 		}
-		i++;
 	}
-	return type;
+	throw Exception("Syntax Error at TYPES", line);
 }
+
+
+

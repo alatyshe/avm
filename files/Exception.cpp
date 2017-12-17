@@ -8,6 +8,7 @@ Exception::Exception(std::string const &error, int line = 0) {
 
 	if (line != 0)
 		error_res << "Line " << line << " : ";
+	error_res << "\033[1;31mERROR \033[0;0m: ";
 	error_res << error << std::endl;
 	this->_error = error_res.str();
 };
