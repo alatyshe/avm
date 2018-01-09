@@ -3,15 +3,13 @@
 
 # include <string>
 
-enum eOperandType
-{
+enum eOperandType {
 	INT8,
 	INT16,
 	INT32,
 	FLOAT,
 	DOUBLE
 };
-
 
 class IOperand {
 
@@ -24,7 +22,8 @@ public:
 	virtual IOperand const * operator/( IOperand const & rhs ) const = 0; // Quotient
 	virtual IOperand const * operator%( IOperand const & rhs ) const = 0; // Modulo
 	virtual std::string const & toString( void ) const = 0; // String representation of the instance
-	virtual ~IOperand( void ) {};
+	virtual ~IOperand( void ) { ; };
+
 };
 
 #endif

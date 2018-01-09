@@ -20,18 +20,15 @@
 # include <iomanip>
 # include <fstream>
 # include <vector>
-# include <limits>
 # include <regex>
-# include <string>
-# include <sstream>
 
 # include "IOperand.hpp"
 # include "Exception.hpp"
+# include "Lexer.hpp"
 # include "Parser.hpp"
 # include "Factory.hpp"
 
-class AVM : public Factory
-{
+class AVM : public Factory {
 
 	typedef void	(AVM::*Commands)();
 
@@ -70,8 +67,8 @@ public:
 
 
 private:
-	AVM&				operator=(const AVM& src);
-	AVM(const AVM&);
+	AVM&				operator=(const AVM &src);
+	AVM(const AVM &src);
 
 };
 

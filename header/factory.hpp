@@ -4,10 +4,8 @@
 # include "IOperand.hpp"
 # include "Exception.hpp"
 
-class IOperand;
+class Factory {
 
-class Factory
-{
 public:
 	Factory();
 	~Factory();
@@ -21,8 +19,8 @@ private:
 	IOperand const * createFloat( std::string const & value ) const;
 	IOperand const * createDouble( std::string const & value ) const;
 
-	Factory&	operator=(const Factory& src);
-	Factory(const Factory&);
+	Factory		&operator=(const Factory &src);
+	Factory(const Factory &src);
 };
 
 #endif

@@ -1,11 +1,8 @@
 # include "../header/Factory.hpp"
 # include "../header/Operand.hpp"
 
-Factory::Factory()
-{ ; }
-
-Factory::~Factory()
-{ ; }
+Factory::Factory() { ; }
+Factory::~Factory() { ; }
 
 IOperand const * Factory::createOperand( eOperandType type, std::string const & value ) const {
 	if (type == INT8)

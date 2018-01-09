@@ -1,10 +1,8 @@
 #include "../header/Factory.hpp"
 #include "../header/AVM.hpp"
-#include "../header/Operand.hpp"
 #include "../header/Exception.hpp"
 
-int				main(int argc, char **argv)
-{
+int				main(int argc, char **argv) {
 	int					count_players;
 	AVM					machine;
 	std::string 		line;
@@ -20,13 +18,10 @@ int				main(int argc, char **argv)
 			machine.stringHandling(line, true);
 	}
 
-	if (machine.getExit() == true)
-	{
+	if (machine.getExit() == true) {
 		machine.displayErrors();
 		machine.displayResult();
-	}
-	else
-	{
+	} else {
 		machine.displayErrors();
 		std::cout << "\033[1;31mERROR \033[0;0m: EXIT cmd missing" << std::endl;
 	}

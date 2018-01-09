@@ -5,15 +5,15 @@
 # include <string>
 # include <sstream>
 
-class					Exception: public std::exception
-{
+class					Exception: public std::exception {
+
 private:
 	std::string		_error;
 
 	const Exception& operator=(const Exception &);
 public:
 	Exception(void);
-	Exception(const Exception&);
+	Exception(const Exception &src);
 	Exception(std::string const &error);
 	Exception(std::string const &error, int line);
 	~Exception(void) throw();

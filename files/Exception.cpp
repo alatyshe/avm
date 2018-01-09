@@ -1,6 +1,8 @@
 # include "../header/Exception.hpp"
 
 Exception::Exception() : _error("") { ; };
+Exception::~Exception() throw () { ; };
+
 Exception::Exception(std::string const &error) : _error(error) { ; }
 
 Exception::Exception(std::string const &error, int line = 0) { 
@@ -13,7 +15,7 @@ Exception::Exception(std::string const &error, int line = 0) {
 	this->_error = error_res.str();
 };
 
-Exception::~Exception() throw () { ; };
+
 
 char const				*Exception::what(void) const throw() { 
 	return this->_error.c_str();

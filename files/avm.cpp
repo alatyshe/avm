@@ -1,5 +1,7 @@
 # include "../header/AVM.hpp"
 
+AVM::~AVM() { ; }
+
 AVM::AVM() : _exit(false), _end_read(false), _line(0) { 
 	this->_cmds[2] = &AVM::pop;
 	this->_cmds[3] = &AVM::dump;
@@ -11,7 +13,6 @@ AVM::AVM() : _exit(false), _end_read(false), _line(0) {
 	this->_cmds[9] = &AVM::print;
 	this->_cmds[10] = &AVM::exit;
 }
-AVM::~AVM() { ; }
 
 void			AVM::stringHandling(std::string line, bool file) {
 	int					cmd;
@@ -19,10 +20,10 @@ void			AVM::stringHandling(std::string line, bool file) {
 
 	this->_line++;
 	try {
-		this->_end_read = Parser::checkEndCmt(line, file, this->_line);
+		this->_end_read = Lexer::checkEndCmt(line, file, this->_line);
 		if (this->_exit == false)
 		{
-			cmd = Parser::checkCmd(line, this->_line);
+			cmd = Lexer::checkCmd(line, this->_line);
 			if (cmd == 0)
 				this->push(line);
 			else if (cmd == 1)
@@ -35,6 +36,10 @@ void			AVM::stringHandling(std::string line, bool file) {
 	}
 }
 
+/*
+**	OPERATIONS
+*/
+
 void			AVM::assert(std::string line) {
 	std::string			f;
 	std::string			s;
@@ -42,7 +47,7 @@ void			AVM::assert(std::string line) {
 	Factory				factory;
 	IOperand 	  const *second;
 
-	type = static_cast<eOperandType>(Parser::getOperandType(line, this->_line));
+	type = static_cast<eOperandType>(Lexer::getOperandType(line, this->_line));
 	Parser::checkNumber(type, line, this->_line);
 	Parser::checkOverflow(type, line, this->_line);
 	second = factory.createOperand(static_cast<eOperandType>(type), line);
@@ -61,7 +66,7 @@ void			AVM::push(std::string line) {
 	eOperandType		type;
 	Factory				factory;
 
-	type = static_cast<eOperandType>(Parser::getOperandType(line, this->_line));
+	type = static_cast<eOperandType>(Lexer::getOperandType(line, this->_line));
 	Parser::checkNumber(type, line, this->_line);
 	Parser::checkOverflow(type, line, this->_line);
 	if (!this->_exit)
@@ -131,7 +136,7 @@ void			AVM::div() {
 			throw Exception("Try use Div on 1 element or less", this->_line);
 		first = this->_values[1];
 		second = this->_values[0];
-		if (std::stod(second->toString()) == 0)
+		if (std::stold(second->toString()) == 0)
 			throw Exception("Try Div on 0", this->_line);
 		this->_values.erase(_values.begin(), _values.begin() + 2);
 
@@ -150,7 +155,7 @@ void			AVM::mod() {
 			throw Exception("Try use Mod on 1 element or less", this->_line);
 		first = this->_values[1];
 		second = this->_values[0];
-		if (std::stod(second->toString()) == 0)
+		if (std::stold(second->toString()) == 0)
 			throw Exception("Try Mod on 0", this->_line);
 		this->_values.erase(_values.begin(), _values.begin() + 2);
 
@@ -196,11 +201,10 @@ void			AVM::print() {
 }
 
 void			AVM::exit() { this->_exit = 1; }
-bool			AVM::getEndRead(void) const { return this->_end_read; }
-bool			AVM::getExit(void) const { return this->_exit; }
+bool			AVM::getExit() const { return this->_exit; }
+bool			AVM::getEndRead() const { return this->_end_read; }
 
-
-void			AVM::displayResult(void) {
+void			AVM::displayResult() {
 	std::vector<std::string>::iterator i = this->_result.begin();
 
 	while (i != this->_result.end()) {
@@ -209,7 +213,7 @@ void			AVM::displayResult(void) {
 	}
 }
 
-void			AVM::displayErrors(void) {
+void			AVM::displayErrors() {
 	std::vector<std::string>::iterator i = this->_errors.begin();
 
 	while (i != this->_errors.end()) {

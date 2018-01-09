@@ -1,8 +1,6 @@
 #include "../header/Parser.hpp"
-#include "../header/AVM.hpp"
 #include "../header/Exception.hpp"
-#include <float.h>
-
+#include "../header/AVM.hpp"
 
 Parser::Parser() { ; }
 Parser::~Parser() { ; }
@@ -30,7 +28,7 @@ int				Parser::checkOverflow( eOperandType type, std::string &value, int line) {
 			max = std::numeric_limits<int32_t>::max();
 			min = std::numeric_limits<int32_t>::min();
 		}
-		tmp = std::stod(value);
+		tmp = std::stold(value);
 		if (tmp < min)
 			throw Exception("Underflow", line);
 		else if (tmp > max)
@@ -47,7 +45,7 @@ int				Parser::checkOverflow( eOperandType type, std::string &value, int line) {
 			max = std::numeric_limits<double>::max();
 			min = -std::numeric_limits<double>::max();
 		}
-		tmp = std::stod(value);
+		tmp = std::stold(value);
 		if (tmp < min)
 			throw Exception("Underflow", line);
 		else if (tmp > max)
@@ -55,76 +53,3 @@ int				Parser::checkOverflow( eOperandType type, std::string &value, int line) {
 	}
 	return (1);
 }
-
-
-int				Parser::checkCmd(std::string &str, int line)	// check on valid command
-{
-	std::string	cmds[11] = {
-		"push ","assert ","pop",
-		"dump","add","sub",
-		"mul","div","mod",
-		"print", "exit"};
-
-	if (str.size() == 0)
-		return (-1);
-	for (int i = 0; i < 11; i++)
-	{
-		if (str.compare(0, cmds[i].size(), cmds[i]) == 0)
-		{
-			str.erase(0, cmds[i].size());
-			if (i != 0 && i != 1)
-			{
-				str.erase(std::remove(str.begin(),str.end(),' '), str.end());
-				if (str.size() != 0)
-					throw Exception("Syntax Error", line);
-			}
-			return i;
-		}
-	}
-	throw Exception("Invalid Command", line);
-}
-
-bool			Parser::checkEndCmt(std::string &str, bool end_read, int line) // checking on  " ;; "
-{
-	int			pos;
-	bool		res;
-
-	res = false;
-	pos = str.find(COMMENT);
-	if (pos != -1 && static_cast<int>(str.size()) > (pos + 1) && str[pos + 1] != ';')
-		str.erase(pos, str.size());
-	if (end_read)
-	{
-		pos = str.find(ENDREAD);
-		if (pos != -1) {
-			if (pos != 0)
-				throw Exception("Syntax Error ;;", line);
-			pos = str.find_first_not_of(" \n", pos + 2);
-			if (pos != -1 && pos != static_cast<int>(str.size())) // проверка на разную хуйню после окончания ввода
-				throw Exception("Syntax Error after ;;", line);
-			res = true;
-		}
-	}
-	return (res);
-}
-
-int 			Parser::getOperandType(std::string &str, int line)
-{
-	std::string		types[5] = {
-		"int8(","int16(","int32(",
-		"float(","double("
-	};
-
-	for (int i = 0; i < 5; i++)
-	{
-		if (str.compare(0, types[i].size(), types[i]) == 0)
-		{
-			str.erase(0, types[i].size());
-			return i;
-		}
-	}
-	throw Exception("Syntax Error at TYPES", line);
-}
-
-
-
