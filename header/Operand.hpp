@@ -1,9 +1,9 @@
 #ifndef FLOAT_H
 # define FLOAT_H
 
-# include "avm.hpp"
+# include "AVM.hpp"
 # include "IOperand.hpp"
-# include "factory.hpp"
+# include "Factory.hpp"
 # include "Exception.hpp"
 # include "Parser.hpp"
 

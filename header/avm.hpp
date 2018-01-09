@@ -28,7 +28,7 @@
 # include "IOperand.hpp"
 # include "Exception.hpp"
 # include "Parser.hpp"
-# include "factory.hpp"
+# include "Factory.hpp"
 
 class AVM : public Factory
 {
