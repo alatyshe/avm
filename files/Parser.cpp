@@ -1,6 +1,7 @@
-# include "../header/Parser.hpp"
-# include "../header/AVM.hpp"
-# include "../header/Exception.hpp"
+#include "../header/Parser.hpp"
+#include "../header/AVM.hpp"
+#include "../header/Exception.hpp"
+#include <float.h>
 
 
 Parser::Parser() { ; }
@@ -36,15 +37,15 @@ int				Parser::checkOverflow( eOperandType type, std::string &value, int line) {
 			throw Exception("Overflow", line);
 	} else if (type == FLOAT || type == DOUBLE) {
 		long double			tmp;
-		double				max;
-		double				min;
+		long double			max;
+		long double			min;
 
 		if (type == FLOAT) {
 			max = std::numeric_limits<float>::max();
-			min = std::numeric_limits<float>::min();
+			min = -std::numeric_limits<float>::max();
 		} else {
 			max = std::numeric_limits<double>::max();
-			min = std::numeric_limits<double>::min();
+			min = -std::numeric_limits<double>::max();
 		}
 		tmp = std::stod(value);
 		if (tmp < min)
@@ -89,6 +90,9 @@ bool			Parser::checkEndCmt(std::string &str, bool end_read, int line) // checkin
 	bool		res;
 
 	res = false;
+	pos = str.find(COMMENT);
+	if (pos != -1 && static_cast<int>(str.size()) > (pos + 1) && str[pos + 1] != ';')
+		str.erase(pos, str.size());
 	if (end_read)
 	{
 		pos = str.find(ENDREAD);
@@ -96,14 +100,11 @@ bool			Parser::checkEndCmt(std::string &str, bool end_read, int line) // checkin
 			if (pos != 0)
 				throw Exception("Syntax Error ;;", line);
 			pos = str.find_first_not_of(" \n", pos + 2);
-			if (pos != -1 && pos != static_cast<int>(str.size())) // проверка на разную хуйню в после окончания ввода
+			if (pos != -1 && pos != static_cast<int>(str.size())) // проверка на разную хуйню после окончания ввода
 				throw Exception("Syntax Error after ;;", line);
 			res = true;
 		}
 	}
-	pos = str.find(COMMENT);
-	if (pos != -1)
-		str.erase(pos, str.size());
 	return (res);
 }
 
